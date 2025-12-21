@@ -1,27 +1,47 @@
 const express = require('express');
+const connectDB = require("./config/database");
 const app = express();
 
-const { adminAuth, userAuth } = require("./middlewares/auth");
+connectDB()
+    .then(() => {
+        console.log("Database connected successfully");
+        app.listen(7777, () => {
+            console.log("Server is successfully listening on port 7777...");
+        })
+    })
+    .catch((err) => {
+        console.error("Database does not connected");
+    })
 
-app.use("/admin", adminAuth);
 
-app.get("/user/login", (req, res) => {
-    res.send("User logged in successfully");
-})
-app.get("/user/data", userAuth, (req, res) => {
-    console.log("Inside user Middle Ware");
-    res.send("User data send!!");
-})
 
-app.get("/admin/getData", (req, res) => {
-    // Logic for sending data to database
-    res.send("All data send successfully");
-})
 
-app.get("/admin/deleteUser", (req, res) => {
-    // Logic for deleting a User from database
-    res.send("User deleted successfully");
-})
+
+
+
+
+
+// const { adminAuth, userAuth } = require("./middlewares/auth");
+
+// app.use("/admin", adminAuth);
+
+// app.get("/user/login", (req, res) => {
+//     res.send("User logged in successfully");
+// })
+// app.get("/user/data", userAuth, (req, res) => {
+//     console.log("Inside user Middle Ware");
+//     res.send("User data send!!");
+// })
+
+// app.get("/admin/getData", (req, res) => {
+//     // Logic for sending data to database
+//     res.send("All data send successfully");
+// })
+
+// app.get("/admin/deleteUser", (req, res) => {
+//     // Logic for deleting a User from database
+//     res.send("User deleted successfully");
+// })
 
 // This will only handle GET call to /user
 // app.get("/user", (req, res) => {
@@ -42,7 +62,3 @@ app.get("/admin/deleteUser", (req, res) => {
 // app.use("/test", (req, res) => {
 //     res.send("This is test page of app");
 // })
-
-app.listen(7777, () => {
-    console.log("Server is successfully learning on port 7777...");
-})
