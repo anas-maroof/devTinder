@@ -6,7 +6,6 @@ const User = require("./models/user");
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-    console.log(req.body);
     const user = new User(req.body);
     try {
         await user.save();
@@ -60,11 +59,11 @@ app.patch("/user", async(req,res)=>{
     const userId = req.body.userId;
     const data = req.body;
     try{
-        await User.findByIdAndUpdate(userId, data);
+        await User.findByIdAndUpdate(userId, data, {runValidators: true});
         res.send("User data updated successfully");
     }
     catch (err) {
-        res.status(400).send("Something went wrong");
+        res.status(400).send("UPDATE FAILED : "+ err.message);
     }
 })
 connectDB()
