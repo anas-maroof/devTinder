@@ -2,40 +2,24 @@ const express = require('express');
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
+const bcrypt = require("bcrypt");
+const { validateSignUPData } = require('./utils/validation');
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-    const data = req.body;
+    // Validate the data
+    validateSignUPData(req);
+
+    // Encrypt the password
+    const { password } = req.body;
+    const hashPassword = await bcrypt.hash(password, 10);
 
     try {
-        const ALLOWED_FIELDS = [
-            "firstName",
-            "lastName",
-            "emailId",
-            "password",
-            "age",
-            "gender",
-            "photoUrl",
-            "skills",
-            "about"
-        ];
-
-        // check allowed fields
-        const isAllowed = Object.keys(data).every((key) =>
-            ALLOWED_FIELDS.includes(key)
-        );
-
-        if (!isAllowed) {
-            throw new Error("Some fields are not allowed");
-        }
-
-        // skills length check
-        if (data?.skills && data.skills.length > 15) {
-            throw new Error("Skills cannot be more than 15");
-        }
-
-        const user = new User(data);
+        const user = new User({
+            ...req.body,
+            password: hashPassword
+        });
         await user.save();
 
         res.send("User added successfully");

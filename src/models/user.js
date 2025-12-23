@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
+        minLength: 1,
         maxLength: 50,
     },
     lastName: {
@@ -28,8 +29,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         validate(value) {
-            if (!validator.isStrongPassword(value)) {
-                throw new Error("Enter a strong password!!"); 
+            if (!validator.isStrongPassword(value, {
+                minLength: 8,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1
+            })) {
+                throw new Error(
+                    "Password must contain uppercase, lowercase, number, and special character"
+                );
             }
         }
     },
