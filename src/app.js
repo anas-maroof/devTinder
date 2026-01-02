@@ -6,6 +6,7 @@ const app = express();
 const User = require("./models/user");
 const bcrypt = require("bcrypt");
 const { validateSignUPData } = require('./utils/validation');
+const { userAuth } = require("./middlewares/auth");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -57,22 +58,9 @@ app.post("/login", async (req, res) => {
     }
 })
 
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
     try {
-        const cookies = req.cookies;
-        const { token } = cookies;
-
-        if (!token) {
-            throw new Error("Invalid Token! Login Again");
-        }
-
-        // Validate token
-        const decodedMessage = jwt.verify(token, "DEV@TINDER56");
-        const { _id } = decodedMessage;
-        const user = await User.findById(_id);
-        if (!user) {
-            throw new Error("User does not found!!");
-        }
+        const user = req.user;
         res.send(user);
     }
     catch (err) {
