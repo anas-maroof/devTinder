@@ -42,10 +42,10 @@ app.post("/login", async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (isPasswordValid) {
             // Create a JWT Token
-            const token = await jwt.sign({ _id: user._id }, "DEV@TINDER56",);
+            const token = await jwt.sign({ _id: user._id }, "DEV@TINDER56", {expiresIn : "1d"});
 
             // Add the token to cookie and send back the reponse to the user
-            res.cookie("token", token);
+            res.cookie("token", token, {expires : new Date(Date.now() + 24* 3600000)});
 
             res.send("Login Successful!");
         }
@@ -66,6 +66,13 @@ app.get("/profile", userAuth, async (req, res) => {
     catch (err) {
         res.status(400).send("LOGIN FAILED: " + err.message);
     }
+})
+
+app.post("/sendConnectionRequest", userAuth, async(req, res) => {
+    const user = req.user;
+    // Sending a connection request
+
+    res.send(user.firstName + " send the connection request!")
 })
 
 
