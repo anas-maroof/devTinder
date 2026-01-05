@@ -41,4 +41,30 @@ const validateSignUpData = (req) => {
     }
 };
 
-module.exports = { validateSignUpData };
+const validateEditProfileData = (req) => {
+    const data = req.body;
+
+    const ALLOWED_FIELDS = [
+        "firstName",
+        "lastName",
+        "age",
+        "gender",
+        "photoUrl",
+        "skills",
+        "about"
+    ];
+
+    // check allowed fields
+    const isAllowed = Object.keys(data).every((key) =>
+        ALLOWED_FIELDS.includes(key)
+    );
+    if (!isAllowed) {
+        throw new Error("Invalid Edit Request");
+    }
+    // skills length check
+    if (data?.skills && data.skills.length > 15) {
+        throw new Error("Invalid Edit Request");
+    }
+};
+
+module.exports = { validateSignUpData, validateEditProfileData };

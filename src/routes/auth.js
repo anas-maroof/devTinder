@@ -39,7 +39,7 @@ authRouter.post("/login", async (req, res) => {
             const token = await user.getJWT();
 
             // Add the token to cookie and send back the reponse to the user
-            res.cookie("token", token, {expires : new Date(Date.now() + 24* 3600000)});
+            res.cookie("token", token, { expires: new Date(Date.now() + 24 * 3600000) });
 
             res.send("Login Successful!");
         }
@@ -49,6 +49,16 @@ authRouter.post("/login", async (req, res) => {
     }
     catch (err) {
         res.status(400).send("LOGIN FAILED: " + err.message);
+    }
+})
+
+authRouter.post("/logout", async (req, res) => {
+    try{
+        res.clearCookie("token");
+        res.send("User logout successfully");
+    }
+    catch (err) {
+        res.status(400).send("LOGOUT FAILED: " + err.message);
     }
 })
 
