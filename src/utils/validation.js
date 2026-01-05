@@ -1,6 +1,6 @@
 const validator = require("validator");
 
-const validateSignUPData = (req) => {
+const validateSignUpData = (req) => {
     const data = req.body;
 
     const ALLOWED_FIELDS = [
@@ -41,4 +41,4 @@ const validateSignUPData = (req) => {
     }
 };
 
-module.exports = { validateSignUPData };
+module.exports = { validateSignUpData };
