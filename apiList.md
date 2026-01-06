@@ -20,6 +20,6 @@ connectionRequestRouter
 userRouter
 - GET /user/connections
 - GET /user/requests
-- GET /user/feed
+- GET /feed
 
 Status : ignored, interested, accepted, rejected
