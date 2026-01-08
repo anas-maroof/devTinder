@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    github:{
+        type: String,
+        maxLength: 100,
+    },
+    linkedIn:{
+        type: String,
+        maxLength: 100,
+    },
     password: {
         type: String,
         required: true,
