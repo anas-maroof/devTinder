@@ -12,7 +12,9 @@ const validateSignUpData = (req) => {
         "gender",
         "photoUrl",
         "skills",
-        "about"
+        "about",
+        "github",
+        "linkedIn"
     ];
 
     // check allowed fields
