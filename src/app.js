@@ -1,8 +1,10 @@
+require("dotenv").config();
 const express = require('express');
 const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
+
 
 app.use(
     cors({
@@ -29,7 +31,7 @@ app.use("/", userRouter);
 connectDB()
     .then(() => {
         console.log("Database connected successfully");
-        app.listen(7777, () => {
+        app.listen(process.env.port, () => {
             console.log("Server is successfully listening on port 7777...");
         })
     })
