@@ -4,7 +4,9 @@ const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
-
+const http = require("http");
+const socket = require("socket.io");
+const initializeSocket = require("./utils/socket");
 
 app.use(
     cors({
@@ -22,16 +24,21 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const chatRouter = require("./routes/chat");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use("/", chatRouter);
+
+const server = http.createServer(app);
+initializeSocket(server);
 
 connectDB()
     .then(() => {
         console.log("Database connected successfully");
-        app.listen(7777, () => {
+        server.listen(7777, () => {
             console.log("Server is successfully listening on port 7777...");
         })
     })
